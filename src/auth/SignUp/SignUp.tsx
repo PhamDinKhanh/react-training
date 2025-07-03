@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -11,11 +12,12 @@ const SignUp = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setSuccess("");
-
     if (password !== confirm) {
       setError("Passwords do not match.");
       return;
@@ -30,7 +32,7 @@ const SignUp = () => {
       console.log("User created:", userCredential.user);
       setSuccess("Account created successfully!");
       await new Promise((res) => setTimeout(res, 1000));
-      setSuccess("Account created successfully!");
+      navigate('/auth/login')
     } catch (err: any) {
       setError("Signup failed. Please try again.");
     }

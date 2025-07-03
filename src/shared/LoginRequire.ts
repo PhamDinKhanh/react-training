@@ -1,11 +1,12 @@
+import Cookies from 'js-cookie';
+
 export function requireAuth(request: Request): Response | null {
     // return null;
-    const cookie = request.headers.get("Cookie");
-    const token = parseTokenFromCookie(cookie);
+    const token = Cookies.get('token');
 
     if (!token) {
         const url = new URL(request.url);
-        return Response.redirect(`/auth/login?redirectTo=${url.pathname}`, 302);
+        return Response.redirect(`/auth/login`, 302);
     }
 
     return null;
