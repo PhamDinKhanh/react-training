@@ -1,11 +1,13 @@
-import { Link, redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase";
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
+import { fetchAccount } from '../../services/fetchAccount'
+import { useAppDispatch } from "../../store/hooks";
+import { loginWithEmail } from "../../store/authSlice";
 
 const Login = () => {
+    const dispatch = useAppDispatch();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -14,11 +16,16 @@ const Login = () => {
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const userCredential = await signInWithEmailAndPassword(auth, email, password)
-            const user = userCredential.user;
-            const idToken = await user.getIdToken();
+            const userCredential = await dispatch(loginWithEmail({ email, password })).unwrap();
+            const uid = userCredential.uid;
+            const idToken = userCredential.tokenid;
+            const userAccount = await fetchAccount(uid)
             Cookies.set('token', idToken, { expires: 3 }); // expires = 3 day
-            navigate('/pages/home');
+            if (userAccount?.role === 'admin') {
+                navigate('/pages/admin');
+            } else {
+                navigate('/pages/users');
+            }
         } catch (err: any) {
             setError("Login failed. Please try again.");
         }

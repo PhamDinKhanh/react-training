@@ -15,3 +15,9 @@ export interface User {
 export interface Production {
 
 }
+
+export interface Account {
+    id: string;
+    userName: string;
+    role: string;
+}
