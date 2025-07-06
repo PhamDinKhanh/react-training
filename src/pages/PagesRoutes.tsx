@@ -4,8 +4,6 @@ import NotFound from "../404.tsx";
 import type { RouteObject } from "react-router";
 import Pages from './Pages.tsx';
 import userRoutes from './User/UserRoutes.tsx';
-import HomePage from './Home/HomePage.tsx';
-import { Navigate } from 'react-router-dom';
 import adminRoutes from './Admin/AdminRoute.tsx';
 import productRoutes from './Products/ProductRoutes.tsx';
 
@@ -24,8 +22,6 @@ const pageRoutes: RouteObject[] = [
             ...productRoutes,
             ...userRoutes,
             ...adminRoutes,
-            { path: 'home', element: <HomePage /> },
-            { path: '', element: <Navigate to="home" replace /> },
         ]
     }
 ]

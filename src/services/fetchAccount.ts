@@ -10,7 +10,8 @@ export async function fetchAccount(id: string): Promise<Account | undefined> {
         return {
             id: docSnap.id,
             userName: data.userName,
-            role: data.role
+            role: data.role,
+            userId: data.userId
         };
     }
 

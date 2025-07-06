@@ -5,29 +5,42 @@ import { useNavigate } from 'react-router-dom';
 import { fetchAccount } from '../../services/fetchAccount'
 import { useAppDispatch } from "../../store/hooks";
 import { loginWithEmail } from "../../store/authSlice";
+import LoadingIndicator from "../../shared/LoadingIndicator";
 
 const Login = () => {
     const dispatch = useAppDispatch();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
 
     const handleLogin = async (e: React.FormEvent) => {
+        setLoading(true)
         e.preventDefault();
         try {
             const userCredential = await dispatch(loginWithEmail({ email, password })).unwrap();
             const uid = userCredential.uid;
             const idToken = userCredential.tokenid;
             const userAccount = await fetchAccount(uid)
-            Cookies.set('token', idToken, { expires: 3 }); // expires = 3 day
-            if (userAccount?.role === 'admin') {
-                navigate('/pages/admin');
-            } else {
-                navigate('/pages/users');
+            if (userAccount !== null && userAccount !== undefined) {
+                Cookies.set('token', idToken, { expires: 3 }); // expires = 3 day
+                Cookies.set('role', userAccount.role, { expires: 3 }); // expires = 3 day
+                Cookies.set('id', userAccount.id, { expires: 3 }); // expires = 3 day
+                setLoading(false)
+                if (userAccount?.role === 'admin') {
+                    navigate('/pages/admin');
+                } else {
+                    navigate(`/pages/users/${userAccount.userId}/details`);
+                }
+            }else {
+                navigate('/auth/login')
             }
         } catch (err: any) {
+            setLoading(false)
             setError("Login failed. Please try again.");
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -41,7 +54,7 @@ const Login = () => {
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                     Sign in to platform
                 </h2>
-
+                {loading && <LoadingIndicator />}
                 {error && <div className="text-red-500 text-sm">{error}</div>}
 
                 <form className="mt-8 space-y-6" onSubmit={handleLogin}>

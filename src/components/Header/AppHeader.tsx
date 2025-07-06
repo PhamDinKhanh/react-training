@@ -1,8 +1,8 @@
-import { AuthenticatedContext } from '../../shared/Authenticated.tsx';
 import { useContext } from 'react';
 
 const AppHeader = () => {
-    const isAuthenticated = useContext(AuthenticatedContext);
+    const isAuthenticated = false
+    // const isAuthenticated = useContext(AuthenticatedContext);
     // const links: Array<Record<string, string>> = [];
     
     return (

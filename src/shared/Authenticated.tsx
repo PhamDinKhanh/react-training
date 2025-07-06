@@ -1,19 +1,30 @@
-import { createContext, type ReactElement } from "react";
+import { useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase";
+import { useAppDispatch } from "../store/hooks"; // hoặc dùng trực tiếp `useDispatch`
+import { setUser } from "../store/authSlice";
 
-interface User {
-    name: string;
-    email: string;
+export default function AuthListener() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const tokenid = await user.getIdToken();
+        dispatch(
+          setUser({
+            uid: user.uid,
+            email: user.email,
+            tokenid: tokenid,
+          })
+        );
+      } else {
+        dispatch(setUser(null));
+      }
+    });
+
+    return () => unsubscribe();
+  }, [dispatch]);
+
+  return null;
 }
-
-const fakeUser = {
-    name: "Neo Amstrong",
-    email: "neo.amstrong@notarealmail.com"
-}
-
-const AuthenticatedContext = createContext<User | null>(null);
-
-const AuthenticatedProvider = ({children}: { children: ReactElement }) => {
-    return (<AuthenticatedContext.Provider value={fakeUser}>{children}</AuthenticatedContext.Provider>)
-}
-
-export { AuthenticatedProvider, AuthenticatedContext };
