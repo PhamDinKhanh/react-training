@@ -11,7 +11,6 @@ export function requireAuth(request: Request): Response | null {
     }
 
     if (request.url.endsWith("/pages") || request.url.endsWith("/pages/")) {
-        const url = new URL(request.url);
         switch (role) {
             case "admin":
                 return Response.redirect("/pages/admin", 302);

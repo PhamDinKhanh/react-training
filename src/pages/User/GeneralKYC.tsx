@@ -17,9 +17,6 @@ export default function GeneralKYCSection({ register, errors }: GeneralInfoField
     const fields: GeneralInfoFields[] = [
         { label: 'Id Type', name: 'idType', type: 'text', placeholder: 'CCCD' },
         { label: 'Id Number', name: 'idNumber', type: 'text', placeholder: '0790xxxxxxxx' },
-        { label: 'Address', name: 'address', type: 'text', placeholder: '364 Cong Hoa' },
-        { label: 'City', name: 'city', type: 'text', placeholder: 'Ho Chi Minh, City' },
-        { label: 'Distric', name: 'distric', type: 'text', placeholder: 'Tan Binh Ward' },
     ];
     return (
         <div
