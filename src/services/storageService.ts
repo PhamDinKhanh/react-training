@@ -1,7 +1,6 @@
 import { storage } from "../firebase";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 
-
 export async function uploadPicture(file: File, folder = "kyc"): Promise<string> {
   const fileName = `${folder}/${Date.now()}_${file.name}`;
   const storageRef = ref(storage, fileName);

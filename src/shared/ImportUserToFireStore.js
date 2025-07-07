@@ -3,8 +3,8 @@ import { getFirestore } from "firebase-admin/firestore";
 import { readFileSync } from "fs";
 
 // Đọc JSON file bằng tay
-const serviceAccount = JSON.parse(readFileSync("./serviceAccountKey.json", "utf8"));
-const users = JSON.parse(readFileSync("../../public/data/users.json", "utf8"));
+const serviceAccount = JSON.parse(readFileSync("../serviceAccountKey.json", "utf8"));
+const users = JSON.parse(readFileSync("public/data/users.json", "utf8"));
 
 initializeApp({
   credential: cert(serviceAccount),

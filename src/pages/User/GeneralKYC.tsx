@@ -1,17 +1,5 @@
 import { type FieldErrors, type UseFormRegister } from 'react-hook-form';
-
-
-type FormData = {
-    idType: string;
-    idNumber: string;
-    idFront: File | null;
-    idBack: File | null;
-    selfie: File | null;
-    phoneNumber: string;
-    address: string;
-    city: string;
-    district: string;
-};
+import type { KYCData } from '../../shared/types';
 
 interface GeneralInfoFieldsProps {
     register: UseFormRegister<any>;
@@ -56,7 +44,7 @@ export default function GeneralKYCSection({ register, errors }: GeneralInfoField
                                 } text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}
                             {...register(field.name, { required: `${field.label} is required` })}
                         />
-                        {errors[field.name as keyof FormData] && (
+                        {errors[field.name as keyof KYCData] && (
                             <p className="text-red-500 text-sm mt-1">
                                 {String(errors[field.name]?.message)}
                             </p>
