@@ -30,9 +30,11 @@ export interface Account {
 }
 
 export interface KYCData {
+    id: string;
     idType: string;
     idNumber: string;
     idFront: File | null;
     idBack: File | null;
     selfie: File | null;
+    expiryDate: string;
 };

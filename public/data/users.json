@@ -36,5 +36,24 @@
     "zipCode": "700000",
     "biography": "I love working with Mobile Native Android/IOS. Beside that i also love work with FE stack like React and Flowbites to create efficient and user-friendly interfaces. In my spare time, I enjoys badminton, fishing, and spending time with my family.",
     "status": "Active"
+  },
+  {
+    "id": 3,
+    "name": "test",
+    "avatar": "neil-sims.png",
+    "firstName": "test",
+    "lastName": "testtest",
+    "country": "test",
+    "city": "test",
+    "address": "test",
+    "email": "test.tc10@gmail",
+    "phoneNumber": "1234567890",
+    "birthday": "1/1/1970",
+    "organization": "test",
+    "role" : "test",
+    "department": "IT",
+    "zipCode": "test",
+    "biography": "test",
+    "status": "Active"
   }
 ]

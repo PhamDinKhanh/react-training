@@ -72,7 +72,13 @@ export const updateUser = createAsyncThunk<User, User>(
       const userRef = doc(db, "users", user.id);
       const { id, ...updateData } = user;
       await updateDoc(userRef, updateData);
-      return user;
+      const updatedSnapshot = await getDoc(userRef);
+      if (updatedSnapshot.exists()) {
+        const updatedData = updatedSnapshot.data();
+        return updatedData as User
+      } else {
+        return thunkAPI.rejectWithValue("KYC not found");
+      }
     } catch (err: any) {
       return thunkAPI.rejectWithValue(err.message);
     }
