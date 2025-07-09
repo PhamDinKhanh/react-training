@@ -1,4 +1,4 @@
-import { Navigate, type RouteObject } from "react-router-dom";
+import { type RouteObject } from "react-router-dom";
 import UserPage from './UserPage.tsx';
 import UserKYCPage from './UserKYCPage.tsx';
 import UserProfilePage from './UserProfilePage.tsx';

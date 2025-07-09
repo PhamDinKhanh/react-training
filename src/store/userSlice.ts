@@ -110,7 +110,6 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-
       // Get user
       .addCase(getUserById.pending, (state) => {
         state.loading = true;

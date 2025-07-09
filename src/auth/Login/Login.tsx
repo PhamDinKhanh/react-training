@@ -16,8 +16,8 @@ const Login = () => {
     const navigate = useNavigate();
 
     const handleLogin = async (e: React.FormEvent) => {
-        setLoading(true)
         e.preventDefault();
+               setLoading(true)
         try {
             const userCredential = await dispatch(loginWithEmail({ email, password })).unwrap();
             const uid = userCredential.uid;

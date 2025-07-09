@@ -3,19 +3,28 @@ import GeneralKYCSection from "./GeneralKYC.tsx";
 import GeneralSection from "./GeneralSection.tsx";
 import { useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../../store/hooks.ts";
-import { addUser, deleteUser, updateUser } from "../../store/userSlice";
-import { useLocation } from "react-router-dom";
+import { addUser, updateUser } from "../../store/userSlice";
+import { getKYCDataById, addKYC, updateKYC } from "../../store/kycSlice.ts";
 import { useEffect } from "react";
+import LoadingIndicator from "../../shared/LoadingIndicator.tsx";
 
 const KycForm = () => {
   const dispatch = useAppDispatch();
   const { loading, user } = useAppSelector((state) => state.user);
+  const { kycData } = useAppSelector((state) => state.kyc);
 
   useEffect(() => {
     if (user !== null) {
       resetUser(user);
+      dispatch(getKYCDataById(user.id))
     }
   }, [user]);
+
+  useEffect(() => {
+    if(kycData != null){
+      resetKYCData(kycData)
+    }
+  }, [kycData])
 
   const {
     register: registerUser,
@@ -31,18 +40,19 @@ const KycForm = () => {
     formState: { errors: KYCDataErrors },
   } = useForm<KYCData>();
 
-  const onSubmitAll = () => {
+  const onSubmitAll = (e: React.FormEvent) => {
+    e.preventDefault();
     onSubmitUser();
     onSubmitKYCData();
   };
 
-  const onSubmitUser = () => {
+  const onSubmitUser = async () => {
     const userData = getUserValues();
     try {
       if (user != null) {
-        dispatch(updateUser(userData));
+       await dispatch(updateUser(userData)).unwrap();
       } else {
-        dispatch(addUser(userData));
+        await dispatch(addUser(userData)).unwrap();
       }
       alert("User added successfully!");
     } catch (e) {
@@ -52,18 +62,28 @@ const KycForm = () => {
   };
 
 
-  const onSubmitKYCData = () => {
-    const KYCData = getKYCDataValues();
-    console.log(KYCData);
+  const onSubmitKYCData = async () => {
+    const KYCDataSubmit = getKYCDataValues();
+    KYCDataSubmit.id = user?.id!;
+    console.log(KYCDataSubmit);
     //shoule be implement slice KYC and create document KYC on firebase
+    try {
+      if (kycData != null) {
+        await dispatch(updateKYC(KYCDataSubmit)).unwrap();
+      } else {
+        await dispatch(addKYC(KYCDataSubmit)).unwrap();
+      }
+    }catch (e) {
+      alert("Failed to add kyc.");
+    }
   };
-
 
   return (
     <>
       <form onSubmit={onSubmitAll}>
         <GeneralSection register={registerUser} errors={userErrors} />
 
+        {loading && <LoadingIndicator />}
         <GeneralKYCSection register={registerKYCData} errors={KYCDataErrors} />
         <div className="col-span-6 sm:col-full">
           <button

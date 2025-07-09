@@ -44,9 +44,9 @@ const ProfileForm = () => {
     console.log("Submitted data:", data);
     try {
       if (user != null) {
-        dispatch(updateUser(data))
+        await dispatch(updateUser(data))
       }else {
-        dispatch(addUser(data))
+        await dispatch(addUser(data))
       }
       alert("User added successfully!");
     } catch (e) {
@@ -171,7 +171,7 @@ const ProfileForm = () => {
         </div>
       </div>
       {loading && <LoadingIndicator />}
-      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <GeneralSection register={register} errors={errors} />
 
         <div className="col-span-6 sm:col-full">

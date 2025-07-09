@@ -17,6 +17,7 @@ export default function GeneralKYCSection({ register, errors }: GeneralInfoField
     const fields: GeneralInfoFields[] = [
         { label: 'Id Type', name: 'idType', type: 'text', placeholder: 'CCCD' },
         { label: 'Id Number', name: 'idNumber', type: 'text', placeholder: '0790xxxxxxxx' },
+        { label: 'Expiry Date', name: 'expiryDate', type: 'text', placeholder: '30/12/1970' },
     ];
     return (
         <div
